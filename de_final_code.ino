@@ -1,19 +1,18 @@
 #include <ESP32Servo.h>
 #include <Stepper.h>
 
-// ---------------- STEPPER ----------------
+
 const int stepsPerRevolution = 2048;
 Stepper stepper(stepsPerRevolution, 18, 21, 19, 22);
-// ---------------- SERVO ----------------
+
 Servo flapServo;
 #define SERVO_PIN 23
 
-// ---------------- SENSORS ----------------
 #define IR_SENSOR     34
 #define METAL_SENSOR  35
 #define RAIN_SENSOR   32
 
-// ---------------- SETTINGS ----------------
+
 int stepSpeed = 12;
 
 int dryPos   = 0;
@@ -22,7 +21,6 @@ int metalPos = 1400;
 
 int currentPos = 0;
 
-// ---------------- MOVE STEPPER ----------------
 void moveTo(int target)
 {
   int steps = target - currentPos;
@@ -30,7 +28,7 @@ void moveTo(int target)
   currentPos = target;
 }
 
-// ---------------- SERVO ----------------
+
 void openFlap()
 {
   Serial.println("Opening flap...");
@@ -39,11 +37,11 @@ void openFlap()
   flapServo.write(0);
 }
 
-// ---------------- SETUP ----------------
+
 void setup()
 {
   Serial.begin(115200);
-  delay(2000);   // 🔥 IMPORTANT for ESP32
+  delay(2000);  
 
   Serial.println("=== SYSTEM STARTED ===");
 
@@ -56,14 +54,14 @@ void setup()
   stepper.setSpeed(stepSpeed);
 }
 
-// ---------------- LOOP ----------------
+
 void loop()
 {
   int irValue = digitalRead(IR_SENSOR);
   int metal   = digitalRead(METAL_SENSOR);
   int rain    = analogRead(RAIN_SENSOR);
 
-  // 🔥 Continuous debug print
+
   Serial.print("IR: ");
   Serial.print(irValue);
   Serial.print(" | Metal: ");
@@ -71,7 +69,7 @@ void loop()
   Serial.print(" | Rain: ");
   Serial.println(rain);
 
-  // -------- DETECTION --------
+ 
   if (irValue == LOW)
   {
     Serial.println("\n>>> OBJECT DETECTED <<<");
